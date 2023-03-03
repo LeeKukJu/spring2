@@ -1,0 +1,90 @@
+SPRING2
+
+	SPRING 개발 시작하기
+	
+	1. STS Tool 압축해제 및 실행하기
+		> 압축해제 후, STS를 실행하였을때, Dashboard가 정상적으로 출력되는것을 확인한다.
+		> Dashboard가 정상적으로 출력되지 않는 경우, 압축해제부터 다시 하는게 좋다
+			(경험한 바로는 사용 중, 이상현상이 발견되는 일이 종종 발생)
+			
+	2. Enc, font 설정
+		> Window > Preferences > enc 검색 후 UTF-8 encoding 설정
+		> 원하는 font 설정 (Baisc 영역에서 설정)
+		> font는 @가 붙어 있는 폰트는 설정하지 않는다.(누워서 나오는 폰트)
+		
+	3. 웹 서버 실행 환경 설정
+		> window > preferences > server > runtime environments
+		> 기존 등록된 서버 삭제 후, add로 현재 사용중인 tomcat 버전을 추가
+		> tomcat 위치 등록 시, tomcat 폴더까지만 선택 후 추가
+		
+	4. Eclipse Java 설정
+		> wondow > preferences > java > installed jres
+		> 현재 사용중인 JDK 버전으로 설정(JDK bin폴더까지 선택)
+		
+	5. 스프링 MVC 프로젝트 생성하기
+		> Spring Legacy Project 생성
+		> 프로젝트 명 : DevProject
+		> Template : Spring MVC Project
+		> Package : kr.or.ddit
+		
+	6. MVC 프로젝트 파일 구성 확인하기
+		> pom.xml : 메이븐 프로젝트 빌드 파일 (설정 후 메이븐 업데이트 하기)
+		> src/main/java : 자바 소스 경로
+		> src/main/resources : 리소스 파일 경로
+		> src/.../WEB-INF/web.xml : 웹 컨테이너 설정 파일   -필터, 리스너, 인터셉터 설정
+		> src/.../WEB-INF/spring/root-context.xml : 스프링 설정 파일 / DB 연결설정
+		> src/.../WEB-INF/spring/appServlet/servlet-context.xml : 스프링 웹 설정 파일
+		> src/.../WEB-INF/views : 뷰 파일 경로
+		
+	7. 프로젝트 실행
+		> 현재까지 적용된 설정을 기반으로 에러 사항 확인하기
+		> HomeController 및 home.jsp를 바탕으로 localhost/ 요청
+		
+	8. 웹 서버 설정 변경하기
+		> 서버 Overview > timeout start 120초, port 80 설정
+		> 서버 Module > Path '/' 변경		*** ContextPath를 설정한다.
+		
+	9. 개발환경 버전 변경하기
+		> pom.xml 수정하기
+			- java version 1.8, springframework version 5.3.25 설정
+			- 제일 하단 source, target 버전도 1.8 설정
+			- artifactid servlet-api에서 javax.servlet-api로 변경 및 버전 3.1.0 설정
+			
+		> web.xml 수정하기
+			- <web-app> 태그 내, 버전 및 dtd 버전을 2.5/2_5에서 3.1/3_1로 변경
+			
+	10. 프로젝트 메이븐 업데이트 진행
+		> 프로젝트 우클릭 > Run as > Maven Clean/Maven Build (Goals: compile 설정)
+		
+	11. 프로젝트 환경설정
+		> Java Build Path 3대장 설정
+			- JRE : Java 1.8설정
+			- Maven : Maven 라이브러리 등록 확인
+			- Apache-tomcat : tomcat 등록 확인
+			
+			*** 위 3대장이 빠지면 안된다.
+			
+		> Project facets 설정
+			- Dynamic Web Module : 3.1 설정
+			- Java : 1.8 / Runtime 체크 설정
+		
+	12. web.xml 인코딩 필터 등록
+		> filter 및 filter-mapping 설정
+		
+	13. 로그 레벨 설정하기
+		> log4j.xml 설정
+		> root level 'debug'로 설정
+		
+	----------------------------------- 초반 SPRING 셋팅 End ----------------------------------------------
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

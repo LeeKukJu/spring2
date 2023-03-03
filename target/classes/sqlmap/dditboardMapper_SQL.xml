@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.DDITBoardMapper">
+
+	<resultMap type="dditboard" id="dditboardMap">
+		<id property="boNo" column="bo_no"/>
+		
+		<result property="boNo" column="bo_no"/>
+		<result property="boTitle" column="bo_title"/>
+		<result property="boContent" column="bo_content"/>
+		<result property="boWriter" column="bo_writer"/>
+		<result property="boDate" column="bo_date"/>
+		<result property="boHit" column="bo_hit"/>
+		<collection property="tagList" resultMap="tagMap"/>
+	</resultMap>
+	
+	<resultMap type="ddittag" id="tagMap">
+		<result property="boNo" column="bo_no"/>
+		<result property="tagName" column="tag_name"/>
+	</resultMap>
+
+	
+	<insert id="create" parameterType="dditboard" useGeneratedKeys="true">
+		<selectKey order="BEFORE" keyProperty="boNo" resultType="int">
+			select seq_dditboard.nextval from dual
+		</selectKey>
+		insert into dditboard(
+			bo_no, bo_title, bo_content, bo_writer, bo_date, bo_hit
+		) values (
+			#{boNo}, #{boTitle}, #{boContent}, #{boWriter}, sysdate, 0
+		)
+	</insert>
+	
+	<insert id="createTag" parameterType="ddittag">
+		insert into ddittag(
+			bo_no, tag_name
+		) values (
+			#{boNo}, #{tagName}
+		)
+	</insert>
+	
+	<select id="view" parameterType="int" resultMap="dditboardMap">
+		select 
+		    b.bo_no, bo_title, bo_writer, bo_content, 
+		    t.bo_no, tag_name
+		from dditboard b left outer join ddittag t on(b.bo_no = t.bo_no)
+		where b.bo_no = #{boNo}
+	</select>
+	
+	<update id="update" parameterType="dditboard">
+		update dditboard
+		set
+			bo_title = #{boTitle},
+			bo_content = #{boContent},
+			bo_date = sysdate
+		where bo_no = #{boNo}
+	</update>
+	
+	<delete id="deleteTag" parameterType="int">
+		delete from ddittag where bo_no = #{boNo}
+	</delete>
+	
+	<select id="list" resultType="dditboard">
+		select * 
+		from dditboard
+		order by bo_no desc
+	</select>
+	
+	<delete id="remove" parameterType="int">
+		delete from dditboard where bo_no = #{boNo}
+	</delete>
+	
+	<update id="increaseHit" parameterType="int">
+		update dditboard
+		set
+			bo_hit = bo_hit + 1
+		where bo_no = #{boNo}
+	</update>
+	
+	<select id="search" parameterType="hashMap" resultType="dditboard">
+		select * 
+		from dditboard
+		where 1=1
+		<if test="searchType == 'title' and searchWord != null and searchWord != ''">
+			and bo_title like '%'||#{searchWord}||'%'
+		</if>
+		<if test="searchType == 'writer' and searchWord != null and searchWord != ''">
+			and bo_writer like '%'||#{searchWord}||'%'
+		</if>
+		<if test="searchType == 'titleWriter' and searchWord != null and searchWord != ''">
+			and bo_title like '%'||#{searchWord}||'%'
+			and bo_writer like '%'||#{searchWord}||'%'
+		</if>
+		order by bo_no desc
+		
+	
+	</select>
+</mapper>
