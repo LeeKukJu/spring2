@@ -11,7 +11,9 @@ public class MemberVO {
 	private String userId;				// 회원아이디
 	private String userPw;				// 회원 비밀번호
 	private String userName;			// 회원이름
+	private int coin;
 	private Date regDate;				// 등록일
 	private Date updDate;				// 수정일
+	private String enabled;
 	private List<MemberAuth> authList;	// 회원권한목록
 }

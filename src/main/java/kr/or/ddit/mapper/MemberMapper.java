@@ -20,5 +20,8 @@ public interface MemberMapper {
 	public void deleteAuth(int userNo) throws Exception;
 
 	public void delete(int userNo) throws Exception;
+	
+	//스프링 시큐리티 로그인에 사용한 쿼리
+	public MemberVO select(int userNo);
 
 }

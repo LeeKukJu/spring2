@@ -6,14 +6,16 @@ import kr.or.ddit.vo.MemberVO;
 
 public interface IMemberService {
 
-	void register(MemberVO member) throws Exception;
+	public void register(MemberVO member) throws Exception;
 
-	List<MemberVO> list() throws Exception;
+	public List<MemberVO> list() throws Exception;
 
-	MemberVO read(int userNo) throws Exception;
+	public MemberVO read(int userNo) throws Exception;
 
-	void modify(MemberVO member) throws Exception;
+	public void modify(MemberVO member) throws Exception;
 
-	void remove(int userNo) throws Exception;
+	public void remove(int userNo) throws Exception;
+
+	public MemberVO select(int userNo);
 
 }

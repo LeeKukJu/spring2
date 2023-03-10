@@ -1,6 +1,7 @@
 package kr.or.ddit.controller.noticeboard.web;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,9 +30,11 @@ public class NoticeModifyController {
 	}
 	
 	@RequestMapping(value = "/update.do", method = RequestMethod.POST)
-	public String noticeUpdate(NoticeVO notice, Model model) {
+	public String noticeUpdate(
+			HttpServletRequest req,
+			NoticeVO notice, Model model) {
 		String goPage = "";
-		ServiceResult result = noticeService.updateNotice(notice);
+		ServiceResult result = noticeService.updateNotice(req, notice);
 		if(result.equals(ServiceResult.OK)) {
 			goPage = "redirect:/notice/detail.do?boNo=" + notice.getBoNo();
 		} else {

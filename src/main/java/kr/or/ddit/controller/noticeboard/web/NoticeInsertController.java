@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import kr.or.ddit.ServiceResult;
 import kr.or.ddit.service.INoticeService;
 import kr.or.ddit.vo.NoticeVO;
+import kr.or.ddit.vo.test.DDITMemberVO;
 
 @Controller
 @RequestMapping("/notice")
@@ -28,7 +31,9 @@ public class NoticeInsertController {
 	}
 	
 	@RequestMapping(value = "/insert.do", method = RequestMethod.POST)
-	public String noticeInsert(NoticeVO noticeVO, Model model) {
+	public String noticeInsert(
+			HttpServletRequest req,
+			NoticeVO noticeVO, Model model) throws Exception {
 		String goPage = "";
 		Map<String, String> errors = new HashMap<>();
 		
@@ -44,15 +49,24 @@ public class NoticeInsertController {
 			model.addAttribute("notice", noticeVO);
 			goPage = "notice/form";
 		}else {
-			noticeVO.setBoWriter("a001");
-			ServiceResult result = noticeService.insertNotice(noticeVO);
-			if(result.equals(ServiceResult.OK)) {
-				goPage = "redirect:/notice/detail.do?boNo=" + noticeVO.getBoNo();
+			HttpSession session = req.getSession();
+			DDITMemberVO memberVO = (DDITMemberVO)session.getAttribute("SessionInfo");
+			if(memberVO != null) {
+				noticeVO.setBoWriter(memberVO.getMemId());
+				ServiceResult result = noticeService.insertNotice(req, noticeVO);
+				if(result.equals(ServiceResult.OK)) {
+					goPage = "redirect:/notice/detail.do?boNo=" + noticeVO.getBoNo();
+				}else {
+					errors.put("message", "서버 에러, 다시 시도해주세요!");
+					model.addAttribute("errors", errors);
+					goPage = "notice/form";
+				}
 			}else {
-				errors.put("message", "서버 에러, 다시 시도해주세요!");
-				model.addAttribute("errors", errors);
+				model.addAttribute("message", "로그인 후에 사용 가능합니다!");
+				model.addAttribute("notice", noticeVO);
 				goPage = "notice/form";
 			}
+			
 		}
 		return goPage;
 		

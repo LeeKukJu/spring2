@@ -2,6 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,9 +44,54 @@
 				</c:forEach>
 			</c:otherwise>
 		</c:choose>
-		
-		
-		
 	</table>
+	<hr><br>
+	
+	<p>
+		<a href="/springBoard/list">1. /springBoard/list</a>
+	</p>
+	<p>
+		<a href="/springBoard/register">2. /springBoard/register(ROLE_MEMBER 권한 필요)</a>
+	</p>
+	<p>
+		<a href="/springNotice/list">3. /springNotice/list</a>
+	</p>
+	<p>
+		<a href="/springNotice/register">4. /springNotice/register(ROLE_ADMIN 권한 필요)</a>
+	</p>
+	
+	<!-- 인증(authentication : 로그인)된 사용자의 경우 => 로그아웃 버튼을 보여줌 -->
+	<sec:authorize access="isAuthenticated()">
+		<form action="/logout" method="post">
+			<input type="submit" value="로그아웃">
+			<sec:csrfInput/>
+		</form>
+		
+		<!-- 
+			로그인 한 사용자 정보 확인하기 
+			CustomUser 클래스의 private MemberVO memberVO 멤버변수를
+			principal.memberVO 로 표현함
+			
+			principar = User = UserDetails(username, password, enabled, memberVO 등)
+		-->
+		<p>
+			<sec:authentication property="principal.memberVO" var="member"/>
+		</p>
+		<p>
+			${member }
+		</p>
+		<script type="text/javascript">
+			let memberVO = "${member}";
+			console.log("memberVO : " + memberVO);
+		</script>
+	</sec:authorize>
+	
+	<!-- 인증(authentication : 로그인)안 된 사용자의 경우 => 로그인 버튼을 보여줌 
+		로그인 안되엉 있으면(true)보이고
+		로그인 되어 있으면(false) 안보임
+	-->
+	<sec:authorize access="isAnonymous()">
+		<a href="/login">로그인</a>
+	</sec:authorize>
 </body>
 </html>
