@@ -7,9 +7,9 @@
 	</ul>
 </nav>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-	<a href="" class="brand-link"> <img
-		src="${pageContext.request.contextPath }/resources/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
-		class="brand-image img-circle elevation-3" style="opacity: .8">
+	<a href="" class="brand-link"> 
+		<img src="${pageContext.request.contextPath }/resources/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
+			class="brand-image img-circle elevation-3" style="opacity: .8">
 		<span class="brand-text font-weight-light">SPRING</span>
 	</a>
 
@@ -20,7 +20,7 @@
 					class="img-circle elevation-2" alt="User Image">
 			</div>
 			<div class="info">
-				<a href="#" class="d-block">DDIT Spring</a>
+				<a href="/notice/profile.do" class="d-block">${sessionScope.SessionInfo.memName }</a>
 			</div>
 		</div>
 		<nav class="mt-2">

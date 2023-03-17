@@ -3,8 +3,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
@@ -37,13 +39,23 @@
 	</beans:bean>
 	<!-- Tiles 설정 끝 -->
 	
-	<beans:bean id="multipartResolver" class = "org.springframework.web.multipart.support.StandardServletMultipartResolver">
-		
-	</beans:bean>
+	<!-- kr.or.ddit 패키지를 컴포넌트 스캔 대상으로 함 -->
+	<context:component-scan base-package="kr.or.ddit.controller" />
 	
+	<!-- 
+		스프링 시큐리티 애너테이션을 활성화 
+		- pre-post-annotations="enabled"
+			-> Controller 특정 메소드에 @PreAuthorize, @PostAuthorize 활성화
+			★ PreAuthorize : 특정 메소드를 실행하기 전에 role(권한) 체킹
+			  PostAuthorize : 특정 메소드를 실행한 후에 role(권한) 체킹
+		- secured-annotations="enabled"
+			-> @Secured를 활성화
+	-->
+	<security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled"/>
 	
-	<context:component-scan base-package="kr.or.ddit" />
+	<beans:bean id="multipartResolver" class = "org.springframework.web.multipart.support.StandardServletMultipartResolver"></beans:bean>
 	
+	<beans:bean id="NoticeDownloadView" class="kr.or.ddit.controller.noticeboard.view.NoticeDownloadView"/>
 	
 	
 </beans:beans>

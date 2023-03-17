@@ -43,7 +43,7 @@
 												</a> <span class="mailbox-attachment-size clearfix mt-1"> 
 													<span>${noticeFile.fileFancysize } </span> 
 													<c:url value="/notice/download.do" var="downloadURL">
-														<c:param name="fileNe" value="${noticeFile.fileNo }"/>
+														<c:param name="fileNo" value="${noticeFile.fileNo }"/>
 													</c:url>
 													<a href="${downloadURL }"> 
 														<span class="btn btn-default btn-sm float-right"> 

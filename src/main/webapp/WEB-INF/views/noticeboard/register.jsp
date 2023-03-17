@@ -8,7 +8,26 @@
 		<div class="card-body">
 			<p class="login-box-msg">회원가입</p>
 	
-			<form action="/notice/signup.do" method="post" id="signupForm">
+			<form action="/notice/signup.do" method="post" id="signupForm" enctype="multipart/form-data">
+				<div class="input-group mb-3" text-center>
+					<img class="profile-user-img img-fluid img-circle" 
+					alt="User Profile" src="/resources/dist/img/AdminLTELogo.png"
+					id="profileImg" style="width:150px">
+				</div>
+				<div class="input-group mb-3">
+					<label for="inputDescription">프로필 이미지</label>
+				</div>
+				<div class="input-group mb-3">
+					<div class="custom-file">
+						<input type="file" class="custom-file-input" name="imgFile" id="imgFile">
+						<label class="custom-file-label" for="imgFile">
+							프로필 이미지를 선택해주세요
+						</label>
+					</div>
+				</div>
+				<div class="input-group mb-3">
+					<label for="inputDescription">프로필 정보</label>
+				</div>
 				<font color="red" class="mt-4 mb-2" id="id">${errors.memId }</font>
 				<div class="input-group mb-3">
 					<input type="text" class="form-control" id="memId" name="memId" value="${member.memId }" placeholder="아이디를 입력해주세요"> 
@@ -105,6 +124,20 @@ $(function(){
 		});
 	});
 	
+	$("#imgFile").on("change", function(event){
+		var file = event.target.files[0];
+		
+		if(isImageFile(file)){
+			var reader = new FileReader();
+			reader.onload = function(e){
+				$("#profileImg").attr("src", e.target.result);
+			}
+			reader.readAsDataURL(file);
+		}else {
+			alert("이미지를 넣어주세요.");
+		}
+	});
+	
 	signupBtn.on("click", function(){
 		// 아이디, 비밀번호, 이름까지만 일반적인 데이터 검증
 		// 개인정보 처리방침 동의를 체크했을때만 가입하기가 가능하도록
@@ -148,6 +181,11 @@ $(function(){
 		}
 	});
 });
+
+function isImageFile(file){
+	var ext = file.name.split(".").pop().toLowerCase();
+	return ($.inArray(ext, ["jpg", "jpeg", "gif", "png"]) === 01) ? false : true;
+}
 
 function DaumPostcode() {
     new daum.Postcode({

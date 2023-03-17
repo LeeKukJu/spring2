@@ -15,10 +15,10 @@ $(function(){
 	var btnList = $("#btnList");
 	
 	btnRegister.on("click", function(){
-		if($("#title").val() == null || $("#title").val() == ""){
-			alert("제목을 입력해주세요.");
-			return false;
-		}
+// 		if($("#title").val() == null || $("#title").val() == ""){
+// 			alert("제목을 입력해주세요.");
+// 			return false;
+// 		}
 		
 		// 등록/수정인지에 따라 이동 경로를 달리한다.
 		if($("#btnRegister").text() == "수정"){
@@ -44,7 +44,7 @@ $(function(){
 			<tr>
 				<td>제목</td>
 				<td>
-					<input type="text" id="title" name="title" value="${board.title }">
+					<input type="text" id="title2" name="title2" value="${board.title }">
 				</td>
 			</tr>
 			<tr>

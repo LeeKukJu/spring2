@@ -11,6 +11,7 @@ import lombok.Data;
 @Data
 public class NoticeVO {
 	private int boNo;
+	private int rnum;
 	private String boTitle;
 	private String boContent;
 	private String boWriter;
@@ -19,6 +20,7 @@ public class NoticeVO {
 	
 	private Integer[] delNoticeNo;	// 삭제된 파일번호를 서버로 보내기 위한 필드
 	private MultipartFile[] boFile;	// 업로드한 파일이 담길 공간
+	// notice : noticeFIel = 1 : N
 	private List<NoticeFileVO> noticeFileList;
 	
 	// 업로드하면 촤라락 셋팅됌

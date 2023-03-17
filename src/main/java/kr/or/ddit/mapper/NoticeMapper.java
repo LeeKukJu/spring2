@@ -26,4 +26,15 @@ public interface NoticeMapper {
 	public NoticeFileVO selectNoticeFile(Integer integer);
 
 	public void deleteNoticeFile(Integer integer);
+	
+	public void deleteNoticeFileByBoNo(int boNo);
+	
+	// 공지사항(NOTICE) + 공지사항 첨부파일(NOTICEFILE) 목록
+	// <select id="selectListNotice" resultMap="noticeMap2">
+	public List<NoticeVO> selectListNotice();
+
+	public NoticeFileVO noticeDownload(int fileNo);
+
+	public void incrementNoticeDowncount(int fileNo);
+
 }

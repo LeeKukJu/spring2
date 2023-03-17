@@ -20,6 +20,23 @@
 		<put-attribute name="content" value="/WEB-INF/views/noticeboard/{1}.jsp"/>
 	</definition>
 	
+	<!-- //////////////// adminlte3 시작 /////////////////// -->
+	<definition name="tiles-layout" template="/WEB-INF/views/tiles/index.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/tiles/lteHeader.jsp"/>
+		<put-attribute name="aside" value="/WEB-INF/views/tiles/lteAside.jsp"/>
+		<put-attribute name="body" value=""/>
+		<put-attribute name="footer" value="/WEB-INF/views/tiles/lteFooter.jsp"/>
+	</definition>
+	
+	<!-- 
+		forwarding
+		view > springNotice폴더 > register.jsp
+		ex) return "springNotice/register";
+	 -->
+	<definition name="*/*" extends="tiles-layout">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp"></put-attribute>
+	</definition> 
+	<!-- /////////////////// adminlte3 끝 /////////////////////// -->
 	
 </tiles-definitions>
 

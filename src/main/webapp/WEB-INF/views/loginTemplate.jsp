@@ -16,7 +16,7 @@
 </head>
 <c:if test="${not empty message }">
 	<script type="text/javascript">
-		alert("${message}}");
+		alert("${message}");
 		<c:remove var="message" scope="request"/>
 		<c:remove var="message" scope="session"/>
 	</script>
@@ -28,5 +28,11 @@
 	<script src="${pageContext.request.contextPath }/resources/plugins/jquery/jquery.min.js"></script>
 	<script src="${pageContext.request.contextPath }/resources/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="${pageContext.request.contextPath }/resources/dist/js/adminlte.min.js"></script>
+	<script src="${pageContext.request.contextPath }/resources/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+	<script type="text/javascript">
+	$(function() {
+		bsCustomFileInput.init();
+	});
+	</script>
 </body>
 </html>
