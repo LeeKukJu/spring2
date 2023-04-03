@@ -18,7 +18,7 @@ SPRING2
 		> tomcat 위치 등록 시, tomcat 폴더까지만 선택 후 추가
 		
 	4. Eclipse Java 설정
-		> wondow > preferences > java > installed jres
+		> window > preferences > java > installed jres
 		> 현재 사용중인 JDK 버전으로 설정(JDK bin폴더까지 선택)
 		
 	5. 스프링 MVC 프로젝트 생성하기
@@ -47,6 +47,12 @@ SPRING2
 	9. 개발환경 버전 변경하기
 		> pom.xml 수정하기
 			- java version 1.8, springframework version 5.3.25 설정
+				<properties>
+					<java-version>1.8</java-version>
+					<org.springframework-version>5.3.25</org.springframework-version>
+					<org.aspectj-version>1.5.4</org.aspectj-version>
+					<org.slf4j-version>1.6.6</org.slf4j-version>
+				</properties>
 			- 제일 하단 source, target 버전도 1.8 설정
 			- artifactid servlet-api에서 javax.servlet-api로 변경 및 버전 3.1.0 설정
 			

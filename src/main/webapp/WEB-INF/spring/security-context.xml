@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- CustomAccessDeniedHandler를 빈으로 등록한다.-->
+	<bean id="customAccessDenied" class="kr.or.ddit.controller.security.CustomAccessDeniedHandler"></bean>
+	<!-- 사용자 정의 로그인 성공 처리자 -->
+	<bean id="customLoginSuccess" class="kr.or.ddit.controller.security.CustomLoginSuccessHandler"></bean>
+	<!-- 사용자가 정의한 비밀번호 암호화 처리기를 빈으로 등록한다. -->
+	<bean id="customPasswordEncoder" class="kr.or.ddit.controller.security.CustomNoOpPasswordEncoder"></bean>
+	<!-- 스프링 시큐리티의 UserDetails를 구현한 클래스를 빈으로 등록 -->
+	<bean id="customUserDetailsService" class="kr.or.ddit.controller.security.CustomUserDetailsService"></bean>
+	
+	<!-- xmlns : xml namespace의 약자 -->
+	<security:http>
+		<!-- URI 패턴으로 접근 제한을 설정한다. -->
+		<security:intercept-url pattern="/springBoard/list" access="permitAll"/>
+		<!-- 해당 권한명의 권한을 가져야만 정상 처리되어 요청됌 -->
+		<security:intercept-url pattern="/springBoard/register" access="hasRole('ROLE_MEMBER')"/>
+		<security:intercept-url pattern="/springNotice/list" access="permitAll"/>
+		<security:intercept-url pattern="/springNotice/register" access="hasRole('ROLE_ADMIN')"/>
+		
+		<!-- 폼 기반 인증 기능을 사용함-->
+<!-- 		<security:form-login/> -->
+
+		<!-- 사용자가 정의한 로그인 페이지의 URI를 지정한다. -->
+		<security:form-login login-page="/login" authentication-success-handler-ref="customLoginSuccess"/>
+		
+		<!--권한이 없는 사용자 접근 거부 처리자의 URI를 지정 -->
+<!-- 		<security:access-denied-handler error-page="/accessError" /> -->
+		
+		<!-- 접근(access) 거부(denied) 처리자(handler) -->
+		<!-- 사용자 정의 접근 거부 처리자 -->
+		<security:access-denied-handler ref="customAccessDenied"/>
+		
+		<!-- 
+			자동 로그인
+			로그인하면 특정 시간 동안 다시 로그인할 필요가 없음
+			스프링 시큐리티는 메모리나 데이터베이스를 사용하여 처리. (우리는 데이터베이스를 사용할 것임)
+			
+			cookie : 1) 크롬(클라이언트)에서 요청하고 톰캣(서버)이 만들어줌.
+					 2) response객체에 만들어진 쿠키를 담아서
+					 3) 크롬의 쿠키저장소에 넣어놓음
+					 4) 크롬이 톰캣에 요청시마다 쿠키들을 툭툭 함께 보냄
+			
+			데이터소스를 지정하고 persistent_logins 테이블을 이용해서 기존 로그인 정보를 기록함.		 
+			쿠키의 유효시간을 지정함(604800초 : 7일)
+		 -->
+		 
+		<security:remember-me data-source-ref="dataSource" token-validity-seconds="604800"/> 
+		
+		<!-- 
+			로그아웃 처리
+			<form action="/logout" method="post">
+				<input type="submit" value="로그아웃"/>
+				<sec:csrfInput/>
+			</form>
+		 -->
+		 <security:logout logout-url="/logout" invalidate-session="true" delete-cookies="remember-me,JSESSION_ID" />
+		 
+	</security:http>
+	
+	<!-- 
+		JDBC : Java DataBase Connectivity 드라이버
+		
+		1. 지정된 테이블 및 스키마(컬럼명, 자료형, 크기, 제약사항)로 테이블을 생성 시 JDBC를 이용하여 인증/인가 처리 가능
+			- USER : 사용자 테이블
+			- AUTHORITIES : 권한 테이블
+		2. 사용자 정의 테이블 및 스키마
+	 -->
+	
+	
+	
+	<!-- authentication(인증) 매니저 -->
+	<security:authentication-manager>
+	<!-- 지정된 아이디와 패스워드로 로그인이 가능하도록 설정한다. -->
+		<!-- 인증 공급자 -->
+		<!-- 
+			userDetailsService : 스프링 시큐리티에서 제공함.
+			userDetails의 멤버변수 : username, password, enabled
+		 -->
+		<security:authentication-provider user-service-ref="customUserDetailsService">
+			<!-- 데이터버이스 관련 접속 정보를 끌어옴 -->
+<!-- 			<security:jdbc-user-service data-source-ref="dataSource"/> -->
+			<!-- 비밀번호 암호화를 하지 않겠다는 설정 -->
+			<security:password-encoder ref="customPasswordEncoder"/>
+		
+<!-- 			<security:user-service> -->
+				<!-- 
+					name : 유저아이디 
+					authorities : 해당 유저가 갖는 권한 / 예) 아이디가 member인 유저의 권한은 "ROLE_MEMBER"이다.
+					{noop} : 암호화 처리기를 사용하지 않겠다는 표시
+				-->
+<!-- 				<security:user name="member" password="{noop}1234" authorities="ROLE_MEMBER"/> -->
+<!-- 				<security:user name="admin" password="{noop}abcd" authorities="ROLE_MEMBER, ROLE_ADMIN"/> -->
+<!-- 			</security:user-service> -->
+		</security:authentication-provider>
+	</security:authentication-manager>
+</beans>
